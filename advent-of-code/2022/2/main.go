@@ -55,6 +55,33 @@
 	return r
  }
 
+ func maxThree(i int) int {
+	if i > 2 {
+		return 0
+	} else if i < 0 {
+		return 2
+	}
+	return i
+ }
+
+ func decidePick(oppPick string, result string) string {
+	// choices := []string{"A", "B", "C"}
+	choices := "ABC"
+	myChoices := []string{"X", "Y", "Z"}
+	i := strings.Index(choices, oppPick)
+	switch result {
+	case "X": // lose
+		i = maxThree(i - 1)
+
+	case "Z": // win
+		i = maxThree(i + 1)
+	default: // draw
+		// nothing
+	}
+
+	return myChoices[i]
+ }
+
  func main() {
 	total := 0
 
@@ -73,7 +100,13 @@
 	lines := readFile("input.txt")
 	for _, line := range lines {
 		round := strings.Split(line, " ")
-		oppChoice, myChoice := round[0], round[1]
+		oppChoice, expectedResult := round[0], round[1]
+
+		// change things up here
+		// remap XYZ into what "would" get that result
+		// provide that data to the next step for the same calculations
+		myChoice := decidePick(oppChoice, expectedResult)
+
 		result := result(Opp[oppChoice], Score[myChoice])
 		roundScore := Score[myChoice] + result
 		total += roundScore
