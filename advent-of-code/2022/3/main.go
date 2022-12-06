@@ -62,6 +62,7 @@ func getDuplicate(comp1 []rune, comp2 []rune) (rune, []rune) {
 			r = x
 		}
 	}
+
 	return r, rList
 }
 
@@ -80,6 +81,9 @@ func findKey(rList1 []rune, rList2 []rune, rList3 []rune) rune {
 
 	_, overLap := getDuplicate(rList1, rList2)
 	key, _ := getDuplicate(overLap, rList3)
+
+	fmt.Printf("Overlap: %v\n", overLap)
+	fmt.Printf("Key: %v\n", key)
 	
 	return key
 }
@@ -88,17 +92,24 @@ func main() {
 	input := readFile("input.part2")
 	total := 0
 	keyTotal := 0
+
 	errors := map[int]rune{}
-	groups := map[int][]rune{}
+	groups := map[int][][]rune{}
 	keys := map[int]rune{}
 	for i, x := range input {
 		// every 3 packs is a different group
 		// find the value that is in all 3 strings
 		group := i / 3
-		fmt.Printf("Group %v: ", group)
+		groups[group] = append(groups[group], []rune(x))
 
-		if i % 3 == 0 {
-			keys[group] = findKey(groups[i-2], groups[i-1], groups[i])
+		fmt.Printf("%v ", i)
+		if (i + 1) % 3 == 0 {
+			fmt.Printf("Group %v:\n", group)
+			fmt.Printf("Packs: %v\n", groups[group][0])
+			fmt.Printf("Packs: %v\n", groups[group][1])
+			fmt.Printf("Packs: %v\n", groups[group][2])
+			keys[group] = findKey(groups[group][0], groups[group][1], groups[group][2])
+			// fmt.Println("Keys in Group ", group, keys[group])
 			keyTotal += priority(keys[group])
 		}
 		
@@ -108,7 +119,6 @@ func main() {
 		total += priority(missPacked)
 	}
 
-	fmt.Printf("%+v\n", groups)
 	fmt.Println("Total Errors: ", total)
 	fmt.Println("Key Total: ", keyTotal)
 }
