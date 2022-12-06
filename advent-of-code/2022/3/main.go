@@ -45,11 +45,11 @@ func priority(item rune) int {
 	return p
 }
 
-func getDuplicate(sack string) rune {
-	l := len(sack) / 2
-	r := []rune(sack)
-	comp1 := r[l:]
-	comp2 := r[:l]
+func getDuplicate(comp1 []rune, comp2 []rune) (rune, []rune) {
+	// to handle 3 lists of multiples this should return a list of runes
+	// to no break previous logic just extending it with additional return
+	var rList []rune
+	var r rune
 	
 	items := make(map[rune]bool)
 	for _, i := range comp1 {
@@ -58,22 +58,57 @@ func getDuplicate(sack string) rune {
 
 	for _, x := range comp2 {
 		if items[x] {
-			return x
+			rList = append(rList, x)
+			r = x
 		}
 	}
-	return 'a'
+	return r, rList
+}
+
+func splitString(s string) ([]rune, []rune) {
+	l := len(s) / 2
+	r := []rune(s)
+	comp1 := r[l:]
+	comp2 := r[:l]
+
+	return comp1, comp2
+}
+
+func findKey(rList1 []rune, rList2 []rune, rList3 []rune) rune {
+	// iterate over 3 lists for intersection
+	// run duplicates twice
+
+	_, overLap := getDuplicate(rList1, rList2)
+	key, _ := getDuplicate(overLap, rList3)
+	
+	return key
 }
 
 func main() {
 	input := readFile("input.part2")
 	total := 0
+	keyTotal := 0
+	errors := map[int]rune{}
+	groups := map[int][]rune{}
+	keys := map[int]rune{}
 	for i, x := range input {
 		// every 3 packs is a different group
+		// find the value that is in all 3 strings
 		group := i / 3
 		fmt.Printf("Group %v: ", group)
-		missPacked := getDuplicate(x)
+
+		if i % 3 == 0 {
+			keys[group] = findKey(groups[i-2], groups[i-1], groups[i])
+			keyTotal += priority(keys[group])
+		}
+		
+		c1, c2 := splitString(x)
+		missPacked, _ := getDuplicate(c1, c2)
+		errors[group] = missPacked
 		total += priority(missPacked)
 	}
 
-	fmt.Println(total)
+	fmt.Printf("%+v\n", groups)
+	fmt.Println("Total Errors: ", total)
+	fmt.Println("Key Total: ", keyTotal)
 }
