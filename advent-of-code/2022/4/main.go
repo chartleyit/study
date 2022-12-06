@@ -5,6 +5,7 @@ import (
 	"os"
 	"bufio"
 	"strings"
+	"strconv"
 )
 
 func readFile(file string) []string {
@@ -36,19 +37,39 @@ func main() {
 	// begin1 < begin2 and end1 > end2
 	// or
 	// begin2 < begin1 and end2 > end1
+	//
+	// part2
+	// overlap at all.
+	// begin1 <= begin2 AND begin2 <= end1
+	// begin1 <= end2 AND end2 <= end1
 	input := readFile("input.part1")
-	numOverlap := 0
+	numOverlapInt := 0
+	completeOverlapInt := 0
 
 	for _, line := range input {
 		ranges := strings.Split(line, ",")
 		range1, range2 := strings.Split(ranges[0], "-"), strings.Split(ranges[1], "-")
-		if range1[0] <= range2[0] && range1[1] >= range2[1] {
-			numOverlap += 1
+		begin1, _ := strconv.Atoi(range1[0])
+		end1, _ := strconv.Atoi(range1[1])
+		begin2, _ := strconv.Atoi(range2[0])
+		end2, _ := strconv.Atoi(range2[1])
+
+		if begin1 <= begin2 && end1 >= end2 {
+			numOverlapInt += 1
+			completeOverlapInt += 1
 			fmt.Printf("Range1: %v, contains Range2: %v\n", range1, range2)
-		} else if range2[0] <= range1[0] && range2[1] >= range1[1] {
-			numOverlap += 1
+		} else if begin2 <= begin1 && end2 >= end1 {
+			numOverlapInt += 1
+			completeOverlapInt += 1
 			fmt.Printf("Range2: %v, contains Range1: %v\n", range2, range1)
+		} else if begin1 <= begin2 && begin2 <= end1 {
+			numOverlapInt += 1
+			fmt.Printf("Range2: %v, starts within Range1: %v\n", range2, range1)
+		} else if begin1 <= end2 && end2 <= end1 {
+			numOverlapInt += 1
+			fmt.Printf("Range2: %v, starts within Range1: %v\n", range2, range1)
 		}
 	}
-	fmt.Println("Number of overlaps: ", numOverlap)
+	fmt.Println("Part1: Number of complete overlaps: ", completeOverlapInt)
+	fmt.Println("Part2: Number of all overlaps int: ", numOverlapInt)
 }
