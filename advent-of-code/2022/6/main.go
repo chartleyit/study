@@ -64,7 +64,7 @@ func isUnique(r []rune) bool {
 func main() {
 	// input is a single line
 	input := readFile("input.part1")
-	markerSize := 4
+	markerSize := 14
 
 	// how many characters need to be parsed before the first start
 	// of packet is received
