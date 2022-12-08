@@ -86,7 +86,9 @@ func arrangeStacks(s [][]rune, i [][]int) [][]rune {
 		if len(move) != x[0] {
 			fmt.Printf("ERROR: incorrect number moved: %d should be %d\n", len(move), x[0])
 		}
-		rev := reverseSlice(move)
+		// part 2 just stats multiples aren't reversed (1 by 1)
+		// rev := reverseSlice(move)
+		rev := move
 		if len(rev) != x[0] {
 			fmt.Printf("ERROR: incorrect number reversed moved: %d should be %d\n", len(rev), x[0])
 		}
