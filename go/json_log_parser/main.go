@@ -1,27 +1,38 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 )
 
 type Log struct {
-	timestamp time.Time `json:"timestamp"` //type for a time stamp
-	level     string
-	msg       string `json:"message"`
+	Timestamp time.Time `json:"timestamp"` //type for a time stamp
+	Level     string    `json:"level"`
+	Msg       string    `json:"msg"`
 }
 
 func main() {
-	fmt.Println("hello from main")
+	logFilename := "log.json"
 
-	// open file
-	// parse/unmarshal json
-	//
+	file, err := os.Open(logFilename)
+	if err != nil {
+		fmt.Printf("Failed to open log file %s: %s\n", logFilename, err)
+	}
 
-	logMsg := Log{}
-	json.NewDecoder([]bytes).Decode(&logMsg)
-	// disallow unknown fields
+	defer file.Close()
 
-	json.Unmarshal([]bytes, logMsg)
+	var logEntry Log
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		err := json.Unmarshal([]byte(scanner.Text()), &logEntry)
+		if err != nil {
+			fmt.Println("Failed to read line:", err)
+			continue
+		}
+
+		fmt.Println(logEntry)
+	}
 }

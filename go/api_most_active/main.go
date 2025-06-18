@@ -12,8 +12,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -48,11 +51,11 @@ import (
 */
 
 type PageData struct {
-	Page       int      `json:"page"`
-	PerPage    int      `json:"per_page"`
-	Total      int      `json:"total"`
-	TotalPages int      `json:"total_pages"`
-	Data       UserData `json:"data"`
+	Page       int        `json:"page"`
+	PerPage    int        `json:"per_page"`
+	Total      int        `json:"total"`
+	TotalPages int        `json:"total_pages"`
+	Data       []UserData `json:"data"`
 }
 
 type UserData struct {
@@ -63,18 +66,77 @@ type UserData struct {
 	UpdatedAt       time.Time `json:"updated_at"`
 	SubmissionCount int       `json:"submission_count"`
 	CommentCount    int       `json:"comment_count"`
-	CreatedAt       time.Time `json:"created_at"`
+	CreatedAt       UnixTime  `json:"created_at"`
 }
 
-type URL string
+// ! handler for unix time values
+type UnixTime time.Time
 
-func getPageData(url *URL, page string, data *PageData) {
-	r, err := http.Get(*url)
-	if err != nil {
-		fmt.Println("could not connect to", *url, err)
+func (t *UnixTime) UnmarshalJSON(b []byte) error {
+	if string(b) == "null" {
+		*t = UnixTime(time.Time{})
+		return nil
 	}
+
+	var ts int64
+	if err := json.Unmarshal(b, &ts); err != nil {
+		return err
+	}
+	*t = UnixTime(time.Unix(ts, 0).UTC())
+	return nil
+}
+
+func (t UnixTime) Time() time.Time {
+	return time.Time(t)
+}
+
+// ! END UNIX TIME
+
+func getUsersnames(threshold int) {
+	// setup vars
+	page := 1
+	url := "https://jsonmock.hackerrank.com/api/article_users/search?page="
+
+	// get a URL
+	resp, err := http.Get(url + strconv.Itoa(page))
+	if err != nil {
+		log.Fatal("failed to get URL", err)
+	}
+	defer resp.Body.Close()
+
+	// ! DEBUG
+	// b, err := io.ReadAll(resp.Body)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(string(b))
+
+	// var pageData PageData
+	// if err := json.Unmarshal(b, &pageData); err != nil {
+	// 	log.Fatal("failed to decond json response body:", err)
+	// }
+
+	// get data for each user from json data
+	var pageData PageData
+	decoder := json.NewDecoder(resp.Body)
+	err = decoder.Decode(&pageData)
+	if err != nil {
+		log.Fatal("failed to decode json response body", err)
+	}
+
+	fmt.Println(pageData)
+
+	// // loop through users and add to list if greater than threshold
+	// var users []string
+	// for _, data := range pageData.Data {
+	// 	if data.Submitted > threshold {
+	// 		users += data.Username
+	// 	}
+	// }
+
+	// return usernames
 }
 
 func main() {
-
+	getUsersnames(10)
 }
