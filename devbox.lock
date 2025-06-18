@@ -1,6 +1,54 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "focus@latest": {
+      "last_modified": "2025-03-23T05:31:05Z",
+      "resolved": "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#focus",
+      "source": "devbox-search",
+      "version": "2021-02-23",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/aj48spvmh6zp80h5zwzyq67lxhqm8v69-focus-unstable-2021-02-23",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/aj48spvmh6zp80h5zwzyq67lxhqm8v69-focus-unstable-2021-02-23"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d8dd0hnbg8g5hj4daypjj3iwzz0lwwh4-focus-unstable-2021-02-23",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/d8dd0hnbg8g5hj4daypjj3iwzz0lwwh4-focus-unstable-2021-02-23"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/24x539smrlcdkjpj4byvibca10jj5x2j-focus-unstable-2021-02-23",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/24x539smrlcdkjpj4byvibca10jj5x2j-focus-unstable-2021-02-23"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/v0b175npqmv9l0rb3qs7jpbvfr4c25bv-focus-unstable-2021-02-23",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/v0b175npqmv9l0rb3qs7jpbvfr4c25bv-focus-unstable-2021-02-23"
+        }
+      }
+    },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "resolved": "github:NixOS/nixpkgs/18dd725c29603f582cf1900e0d25f9f1063dbf11?lastModified=1744536153&narHash=sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg%2FN38%3D"
     },

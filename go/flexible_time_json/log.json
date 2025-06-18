@@ -1,0 +1,4 @@
+{"level": "info", "event":"login", "timestamp":"2025-05-05T14:32:00Z"}
+{"level": "info", "event":"logout", "timestamp":"2025-05-05 14:33:00"}
+{"level": "info", "event":"timeout", "timestamp":"05-May-2025 14:34:00"}
+{"event":"timeout", "timestamp":"05-May-2025 14:35:00"}

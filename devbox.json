@@ -3,7 +3,8 @@
   "packages": [
     "python3@latest",
     "go@latest",
-    "istioctl@latest"
+    "istioctl@latest",
+    "focus@latest"
   ],
   "shell": {
     "init_hook": [
