@@ -8,8 +8,7 @@ import (
 	"time"
 )
 
-// const apiKey = "2eec12665fdb482d492816d90b5a4220"
-const apiKey = "4f9792bc0f55a12f74d2638a94b4473e"
+const apiKey = "revoked"
 
 func KtoF(kelvin float64) float64 {
 	return (9/5)*(kelvin-273) + 32
