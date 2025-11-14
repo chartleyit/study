@@ -9,7 +9,11 @@ fn main() {
     let secret_number = rand::rng()
         .random_range(1..=100);
 
+    let mut _guesses = 0;
+
     loop {
+        _guesses += 1;
+
         println!("Please input your guess below.");
 
         let mut guess = String::new();
@@ -30,6 +34,7 @@ fn main() {
             Ordering::Greater => println!("Too big!"),
             Ordering::Equal => {
                 println!("You win!");
+                println!("You took {_guesses} guesses");
                 break;
             },
         }
