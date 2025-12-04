@@ -6,8 +6,9 @@ def valid(id):
         return False
 
     if len(id_str) % 2 == 0:
-        if id_str[:len(id_str)//2] == id_str[len(id_str)//2]:
-            print(f"{id_str[:len(id_str)//2]} == {id_str[len(id_str)//2]}")
+        id_split = len(id_str)//2
+        # print(f"id_split: {id_split} => {id_str[:id_split]} == {id_str[id_split:]}")
+        if id_str[:id_split] == id_str[id_split:]:
             return False
     
     return True
@@ -18,9 +19,9 @@ def parse(ids):
     return id_list
 
 def main():
-    input_file = "input.txt.test"
+    # input_file = "input.txt.test"
     # input_file = "input.txt.test2"
-    # input_file = "input.txt"
+    input_file = "input.txt"
 
     file = open(input_file, "r")
     id_ranges = parse(file.read())
@@ -29,11 +30,12 @@ def main():
     id_checksum = 0
     for id_range in id_ranges:
         start, end = int(id_range.split("-")[0]), int(id_range.split("-")[1])
-        print(f"id_range: {start}, {end}")
-        for id in range(start, end):
-            print(f"{id}")
-            if not valid(id):
+        # print(f"id_range: {start}, {end}")
+        for id in range(start, end + 1):
+            chk = valid(id)
+            if not chk:
                 id_checksum += id
+                # print(f"{id} {chk} - updated sum: {id_checksum}")
     
     print(f"invalid id sum: {id_checksum}")
 
