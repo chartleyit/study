@@ -4,7 +4,8 @@
     "python3@latest",
     "go@latest",
     "istioctl@latest",
-    "focus@latest"
+    "focus@latest",
+    "git@latest"
   ],
   "shell": {
     "init_hook": [
